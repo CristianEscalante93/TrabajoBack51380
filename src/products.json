@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Lámpara moderna",
+    "description": "Lampara moderna con mampara blanca traslucida, con tensor y cable de 2m",
+    "price": "$2500",
+    "thumbnail": "img",
+    "code": "11",
+    "stock": "100",
+    "id": 1
+  },
+  {
+    "tile": "Lámpara vintage",
+    "description": "Lampara vintage negro brillante con tonalidad cobre, cúpula y cable de 2m",
+    "price": "$1000",
+    "thumbnail": "img",
+    "code": "22",
+    "stock": "100",
+    "id": 2
+  },
+  {
+    "title": "Lámpara",
+    "description": "Lampara moderna con mampara blanca traslucida, con tensor y cable de 2m",
+    "price": "$4000",
+    "thumbnail": "img",
+    "code": "1333333",
+    "stock": "10000000",
+    "id": 3
+  }
+]
