@@ -1,7 +1,6 @@
 const fs = require("fs");
 
 class ProductManager{
-  
 
   constructor(){
     this.path = "./src/products.json";
@@ -31,20 +30,29 @@ class ProductManager{
     if(checkCode){
       return console.log('this code already exists');
     }
-    if(!product.title && !product.description && !product.price && !product.thumbnail && product.code && product.stock){
+    if(!product.title && !product.description && !product.price && !product.thumbnail && product.code && product.stock && !product.category){
       return console.log('Fields missing');
     }
-    let newProduct= {...product, id: this.id};
+    let nextId = await this.getNextId(products);
+    let newProduct= {...product, status : true, id: nextId};
     products.push(newProduct);
-    this.id++;
     await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2));
     
-    return console.log('Product Added');
+    return newProduct;
     } catch (error) {
       return error ;
     }
   }
 
+  async getNextId(Products) {
+    let lastId = 0;
+    const allIdsArray = Products.map((product) => product.id);
+    allIdsArray.filter((id) => typeof id === "number");
+    if (allIdsArray.length > 0) {
+      lastId = Math.max(...allIdsArray);
+    }
+    return lastId + 1;
+  }
 
 
   getProductById= async (id)=>{
@@ -64,13 +72,15 @@ class ProductManager{
   updateproduct= async(id,modifiedProduct)=>{
     try {
       let products= await this.getProducts();
-      let indexProduct = products.findIndex((index) => index.id === id);
+      console.log(id)
+      let indexProduct = products.findIndex((index) => index.id == id);
+      console.log(indexProduct)
       if (indexProduct !== -1) {
       products[indexProduct]={...products[indexProduct], ...modifiedProduct}
 
       let productString = JSON.stringify(products, null, 2);
       await fs.promises.writeFile(this.path, productString);
-      return console.log('Modified Product');
+      return products[indexProduct];
     } else {
       return console.log('Product Not Found');
     }
@@ -86,28 +96,24 @@ class ProductManager{
         console.log("File not found");
       } else {
           let products= await this.getProducts();
-          let position = await products.findIndex((element) => element.id === id);
-  
+          let position = await products.findIndex((element) => element.id == id);
+          let productDelete = products[position];
         if (position === -1) {
           console.log("No product found with that ID");
         } else {
           products.splice(position, 1);
-          console.log("Removed product");
         }
         if (!products.length == 0) {
           await fs.promises.writeFile(this.path, JSON.stringify(products,null,2));
         } else {
           await fs.promises.unlink(this.path);
         }
-          
+        return productDelete;
       }
     } catch (error) {
       return error;
     }
-    
 }
-
-
 }
 
 
