@@ -1,0 +1,93 @@
+<div class="container d-flex">
+<div class="w-600">
+  <h2 class="text-center my-4">Lista de Productos</h2>
+  <div class="productList">
+    {{#each products}}
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="{{thumbnail}}" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
+            <p class="card-text">Categoria: {{category}}</p>
+
+            <p class="card-text"><small class="text-body-secondary">{{description}}</small></p>
+            <p class="card-text">${{price}}</p>
+            <p class="card-text"><small class="text-body-secondary">stock: {{stock}}</small></p>
+            <p class="card-text">codigo: {{code}}</p>
+            <p class="card-text"><small class="text-body-secondary">id: {{id}}</small></p>
+            <button type="button" class="btn btn-danger" onclick="deleteProduct('{{id}}')">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>
+<div class="w-40">
+  <h2 class="text-center my-4">Crear producto</h2>
+  <form id="formProducts" style="margin: auto">
+    <div style="margin-bottom: 16px">
+
+      <div class="col-md-auto mx-3">
+        <label for="title"> Titulo: </label>
+        <br />
+        <input type="text" name="title" id="formTitle" style="margin-bottom: 16px" class="form-control"
+          placeholder="Agregar un titulo al producto" />
+      </div>
+
+      <div class="col-md-auto mx-3">
+        <label for="description"> Descripción: </label>
+        <br />
+        <input type="text" name="description" id="formDescription" style="margin-bottom: 16px" class="form-control"
+          placeholder="Agregar un descripción al producto" />
+      </div>
+
+      <div class="col-md-auto mx-3">
+        <label for="price"> Precio: </label>
+        <br />
+        <input type="number" name="price" id="formPrice" style="margin-bottom: 16px" step="1" class="form-control"
+          placeholder="Agregar un precio al producto" />
+      </div>
+
+      <div class="col-md-auto mx-3">
+        <label for="code"> Código: </label>
+        <br />
+        <input type="text" name="code" id="formCode" style="margin-bottom: 16px" class="form-control"
+          placeholder="Agregar un código al producto" />
+      </div>
+
+      <div class="col-md-auto mx-3">
+        <label for="stock"> Stock: </label>
+        <br />
+        <input type="number" name="stock" id="formStock" style="margin-bottom: 16px" step="1" class="form-control"
+          placeholder="Agregar stock al producto" />
+      </div>
+
+      <div class="col-md-auto mx-3">
+        <label for="category"> Categoria: </label>
+        <br />
+        <input type="text" name="category" id="formCategory" style="margin-bottom: 16px" class="form-control"
+          placeholder="Agregar una categoria al producto" />
+      </div>
+
+      <div class="col-md-auto mx-3">
+        <label for="thumbnail"> URL de la Imagen: </label>
+        <br />
+        <input type="text" name="thumbnail" id="formThumbnail" style="margin-bottom: 16px" class="form-control"
+          placeholder="Agregar una URL valida" />
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center">
+        <input type="submit" value="Crear producto" class="btn btn-primary" />
+      </div>
+    </div>
+  </form>
+</div>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/index.js"></script>
+

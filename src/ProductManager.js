@@ -155,27 +155,6 @@ const product4 = {
 
 const productManager= new ProductManager();
 
-//const asyncFn= async ()=>{
-//await productManager.getProducts();
-
-//await productManager.addProduct(product1);
-//await productManager.addProduct(product2);
-//await productManager.addProduct(product3);
-  
-  // await productManager.getProducts();
-  
-//await productManager.getProductById(1);
-  // await productManager.getProductById(2);
-  // await productManager.getProductById(10);
-  
-//await productManager.updateproduct(3, product4)
-  // await productManager.getProductById(1);
-  
-  //await productManager.deleteProduct(2);
-  //await productManager.getProducts();
-//}
-//asyncFn();
-
 module.exports = ProductManager;
 
 
