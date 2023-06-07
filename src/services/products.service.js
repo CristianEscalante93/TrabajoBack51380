@@ -9,8 +9,12 @@ class ProductService {
   }
 
   async getAll() {
-    const products = await ProductsModel.find({});
+    try {
+      const products = await ProductsModel.find({}).lean();
     return products;
+    } catch (error) {
+      return []
+    }
   }
 
   async getOneById(id) {
