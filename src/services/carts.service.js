@@ -1,0 +1,80 @@
+const { CartsModel }= require('../DAO/models/carts.model.js');
+const { ProductsModel }= require('../DAO/models/products.model.js');
+
+
+class CartService {
+  async getAll() {
+    try {
+      const cart = await CartsModel.find({});
+      return cart;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async createCart() {
+    try {
+      const cart = await CartsModel.create({});
+      return cart;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getCartById(cartId) {
+    try {
+      const cart = await CartsModel.findById(cartId);
+      return cart;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async addProductToCart(cartId, productId) {
+    try {
+      const product = await ProductsModel.findById(productId);
+      if (!product) {
+        throw new Error('Product not found');
+      }
+      const cart = await CartsModel.findById(cartId);
+      if (!cart) {
+        throw new Error('Cart not found');
+      }
+      const existingProduct = cart.products.find((product) => product._id.toString() === productId);
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      } else {
+        cart.products.push({ _id: productId, quantity: 1 });
+      }
+      const savedCart = await cart.save();
+      return savedCart;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async removeProductFromCart(cartId, productId) {
+    try {
+      const cart = await CartsModel.findById(cartId);
+      if (!cart) {
+        throw new Error('Cart not found');
+      }
+
+      const productIndex = cart.products.findIndex((product) => product._id.toString() === productId);
+      if (productIndex === -1) {
+        throw new Error('Product not found in the cart');
+      }
+
+      if (cart.products[productIndex].quantity > 1) {
+        cart.products[productIndex].quantity -= 1;
+      } else {
+        cart.products.splice(productIndex, 1);
+      }
+
+      const savedCart = await cart.save();
+      return savedCart;
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+module.exports = CartService;

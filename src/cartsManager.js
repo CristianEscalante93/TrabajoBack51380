@@ -1,5 +1,5 @@
 const fs = require("fs");
-const ProductManager = require("./ProductManager");
+const ProductManager = require("./DAO/ProductManager");
 const productManager = new ProductManager();
 
 class CartManager {
