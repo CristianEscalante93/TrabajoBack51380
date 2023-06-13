@@ -25,6 +25,37 @@
     </div>
     {{/each}}
   </div>
+  {{#if pagination.hasPrevPage}}
+    <a style='font-size: 20;' href='/realTimeProducts/?category={{category}}&limit={{limit}}&page={{pagination.prevPage}}' >⬅{{pagination.prevPage}}</a>
+  {{/if}}
+  <a style='font-size: 20;' href='#'>{{pagination.page}}</a>
+  {{#if pagination.hasNextPage}}
+    <a style='font-size: 20;' href='/realTimeProducts/?category={{category}}&limit={{limit}}&page={{pagination.nextPage}}'>➡{{pagination.nextPage}}</a>
+  {{/if}}
+  <br />
+  <br />
+  {{#each links}}
+    <a href='{{this.href}}'>{{this.label}}</a>
+  {{/each}}
+  </br>
+  TOTAL DOCS:
+  {{pagination.totalDocs}}
+  LIMIT:
+  {{pagination.limit}}
+  TOTAL PAGES:
+  {{pagination.totalPages}}
+  PAGE:
+  {{pagination.page}}
+  PAGING COUNTER:
+  {{pagination.pagingCounter}}
+  HAS PREV PAG:
+  {{pagination.hasPrevPage}}
+  HAS NEXT PAGE:
+  {{pagination.hasNextPage}}
+  PREV PAGE:
+  {{pagination.prevPage}}
+  NEXT PAGE:
+  {{pagination.nextPage}}
 </div>
 <div class="w-40">
   <h2 class="text-center my-4">Crear producto</h2>

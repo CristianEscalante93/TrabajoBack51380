@@ -1,6 +1,6 @@
 //@ts-check
 const { Schema, model }= require("mongoose");
-
+const mongoosePaginate = require('mongoose-paginate-v2');
 const schema = new Schema(
   {
     title: { type: String, required: true, max: 100 },
@@ -14,6 +14,7 @@ const schema = new Schema(
   }
 );
 
+schema.plugin(mongoosePaginate);
 const ProductsModel = model("products", schema);
 module.exports = {ProductsModel};
 

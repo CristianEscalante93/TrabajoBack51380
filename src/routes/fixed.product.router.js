@@ -10,9 +10,29 @@ const productService = new ProductService;
 
 router.get("/", async (req, res) => {
   try {
-    const products = await productService.getAll();
+    const products = await productService.getAll(req.query);
+    const { docs, ...rest } = products;
+    const {limit, page, category, sort }= req.query
+console.log(rest)
+    let prod = docs.map((doc) => {
+      return {
+        title: doc.title,
+        description: doc.description,
+        price: doc.price,
+        thumbnail: doc.thumbnail,
+        code: doc.code,
+        stock: doc.stock,
+        category: doc.category,
+        _id: doc.id
+      };
+    });
+    let links = [];
+  for (let i = 1; i < rest.totalPages + 1; i++) {
+
+    links.push({ label: i, href: `http://localhost:8080/?category=${category}&limit=${limit}&page=` + i });
+  }
     // const products = await productManager.getProducts();
-    return res.render( "home", {products:products} );
+    return res.render( "home", {products:prod, pagination: rest,links} );
   } catch (error) {
     res.status(500).json({ msg: "Error"});
   } 

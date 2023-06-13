@@ -1,3 +1,6 @@
+const CartService = require("../../services/carts.service.js");
+
+const cartservice= new CartService
 const socket = io();
 const formProducts = document.getElementById("formProducts");
 const inputTitle = document.getElementById("formTitle");
@@ -12,6 +15,14 @@ function deleteProduct(productId) {
   console.log(productId)
   socket.emit("deleteProduct", productId);
 };
+
+
+function addCart(id) {
+  fetch(`/api/carts/${id}`, {
+    method: "POST",
+  }).then((res) => res.json())
+    .catch((err) => console.log(err));
+}
 
 formProducts.onsubmit = (e) => {
   const newProduct = {

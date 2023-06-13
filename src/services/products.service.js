@@ -1,5 +1,5 @@
 const { ProductsModel } = require('../DAO/models/products.model.js');
-
+const {paginate} = require('mongoose-paginate-v2')
 class ProductService {
   validateProduct(title, description, price, thumbnail, code, stock, category, status) {
     if (!title || !description || !price || !thumbnail || !code || !stock || !category || !status) {
@@ -8,12 +8,27 @@ class ProductService {
     }
   }
 
-  async getAll() {
+  async getAll(req) {
     try {
-      const products = await ProductsModel.find({}).lean();
+      const {limit, page, category, sort }= req
+      
+      const queryCategory = category ? { category: category } : {};
+      
+      let querySort = {};
+      if (sort == 'asc') {
+        querySort = { price: 1 };
+      } else if (sort == 'desc') {
+        querySort = { price: -1 };
+      } else {
+        querySort = {};
+      }
+      const products = await ProductsModel.paginate(queryCategory, { limit: limit || 2, page: page || 1,sort: querySort});
+      
+    products.prevLink = products.prevPage ? `/api/products?category=${category}&limit=${limit}&page=${products.prevPage}` : null;
+    products.nextLink = products.nextPage ? `/api/products?category=${category}&limit=${limit}&page=${products.nextPage}` : null;
     return products;
     } catch (error) {
-      return []
+      return [];
     }
   }
 

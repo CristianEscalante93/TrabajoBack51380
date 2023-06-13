@@ -11,22 +11,23 @@ const productService = new ProductService;
 
 router.get('/', async (req,res)=>{
   try {
-    const limit= req.query.limit;
+    //const limit= req.query.limit;
   // const products= await productManager.getProducts();
-  const products = await productService.getAll();
-  if(limit){
-    res.status(200).json({
-      status: "success",
-      msg: "Lista de productos limitada",
-      payload: products.slice(0,limit),
-    })
-  }else{
+  const products = await productService.getAll(req.query);
+
+  // if(limit){
+  //   res.status(200).json({
+  //     status: "success",
+  //     msg: "Lista de productos limitada",
+  //     payload: products,
+  //   })
+  // }else{
     res.status(200).json({
       status: "success",
       msg: "Lista de productos",
       payload: products,
     });
-  }
+  //}
   } catch (error) {
     res.status(500).json({message:"Error"});
   }

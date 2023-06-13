@@ -15,26 +15,43 @@
         <p class="card-text"><small class="text-body-secondary">stock: {{stock}}</small></p>
         <p class="card-text">codigo: {{code}}</p>
         <p class="card-text"><small class="text-body-secondary">id: {{_id}}</small></p>
+        <button type="button" class="btn btn-primary" onclick="addToCart('{{_id}}')">Agregar🛒</button>
       </div>
     </div>
   </div>
 </div>
     {{/each}}
+    {{#if pagination.hasPrevPage}}
+    <a style='font-size: 20;' href='/?category={{category}}&limit={{limit}}&page={{pagination.prevPage}}' >⬅{{pagination.prevPage}}</a>
+  {{/if}}
+  <a style='font-size: 20;' href='#'>{{pagination.page}}</a>
+  {{#if pagination.hasNextPage}}
+    <a style='font-size: 20;' href='/?category={{category}}&limit={{limit}}&page={{pagination.nextPage}}'>➡{{pagination.nextPage}}</a>
+  {{/if}}
+  <br />
+  <br />
+  {{#each links}}
+    <a href='{{this.href}}'>{{this.label}}</a>
+  {{/each}}
+  </br>
+  totalDocs:
+  {{pagination.totalDocs}}
+  limit:
+  {{pagination.limit}}
+  totalPages:
+  {{pagination.totalPages}}
+  page:
+  {{pagination.page}}
+  pagingCounter:
+  {{pagination.pagingCounter}}
+  hasPrevPage:
+  {{pagination.hasPrevPage}}
+  hasNextPage:
+  {{pagination.hasNextPage}}
+  prevPage:
+  {{pagination.prevPage}}
+  nextPage:
+  {{pagination.nextPage}}
   </ul>
 </div>
 
-{{!-- <div class="card mb-3" style="max-width: 540px;">
-  <div class="row g-0">
-    <div class="col-md-4">
-      <img src="..." class="img-fluid rounded-start" alt="...">
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-        <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-      </div>
-    </div>
-  </div>
-</div> --}}
