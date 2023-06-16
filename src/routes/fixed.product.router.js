@@ -11,9 +11,9 @@ const productService = new ProductService;
 router.get("/", async (req, res) => {
   try {
     const products = await productService.getAll(req.query);
+
     const { docs, ...rest } = products;
     const {limit, page, category, sort }= req.query
-console.log(rest)
     let prod = docs.map((doc) => {
       return {
         title: doc.title,
@@ -23,7 +23,7 @@ console.log(rest)
         code: doc.code,
         stock: doc.stock,
         category: doc.category,
-        _id: doc.id
+        _id: doc._id
       };
     });
     let links = [];
@@ -37,5 +37,26 @@ console.log(rest)
     res.status(500).json({ msg: "Error"});
   } 
 });
+router.get('/:pid', async (req, res) => {
+  try {
 
+    const pid = req.params.pid;
+    const productQuery = await productService.getOneById(pid);
+    console.log(productQuery)
+    let product = {
+      thumbnail: productQuery.thumbnail,
+      title: productQuery.title,
+      description: productQuery.description,
+      price: productQuery.price,
+      code: productQuery.code,
+      stock: productQuery.stock,
+      category: productQuery.category,
+      _id: productQuery._id
+      
+    };
+    return res.status(200).render('productDetail', { product });
+  } catch (error) {
+    console.log(error);
+  }
+});
 module.exports = router;

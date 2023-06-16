@@ -6,6 +6,7 @@ const { Server } = require("socket.io");
 
 const productsRouter = require("./routes/products.router.js");
 const cartsRouter = require("./routes/cart.router.js");
+const cartRouter = require("./routes/cartvistarouter.js")
 const fixedProductRouter = require("./routes/fixed.product.router.js");
 const realTimeProductRouter = require("./routes/real.time.product.router.js");
 
@@ -30,10 +31,12 @@ app.set("view engine", "handlebars");
 //API REST CON JSON
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+
 //HTML RENDER
 app.use("/", fixedProductRouter);
 app.use("/realTimeProducts", realTimeProductRouter);
 app.use('/chat', chatRouter);
+app.use("/carts", cartRouter);
 
 
 const httpServer=  app.listen(PORT, ()=>{

@@ -1,6 +1,6 @@
-const CartService = require("../../services/carts.service.js");
+// const CartService = require("../../services/carts.service.js");
 
-const cartservice= new CartService
+// const cartservice= new CartService
 const socket = io();
 const formProducts = document.getElementById("formProducts");
 const inputTitle = document.getElementById("formTitle");
@@ -17,11 +17,25 @@ function deleteProduct(productId) {
 };
 
 
-function addCart(id) {
-  fetch(`/api/carts/${id}`, {
-    method: "POST",
-  }).then((res) => res.json())
-    .catch((err) => console.log(err));
+async function addCart(id) {
+  let cartId = localStorage.getItem('cartId')
+  if(!cartId){
+    const response= await fetch('/api/carts',{
+      method:'post'
+    })
+    const body= await response.json()
+    localStorage.setItem('cartId', body.payload)
+    // console.log(body.payload)
+    cartId=body.payload
+  }
+  const response = await fetch(`/api/carts/${cartId}/products/${id}`,{
+    method: 'post'
+  });
+  if(response.ok){
+    alert('Producto agregado')
+  }else{
+    alert((await response.json()).error)
+  }
 }
 
 formProducts.onsubmit = (e) => {

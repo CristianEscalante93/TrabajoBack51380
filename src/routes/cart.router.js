@@ -40,8 +40,10 @@ router.post("/", async (req, res) => {
     res.status(201).json({
     status: "success",
     msg: "Carrito creado",
-    payload: addCart,
+    success: true,
+    payload: JSON.parse(JSON.stringify(addCart._id)),
   }); 
+
   } catch (error) {
     res.status(500).json({message:"Error"});
   }
@@ -70,13 +72,13 @@ router.get("/:idCart/products", async (req, res) => {
   }
 });
 
-router.put("/:idCart/products/:idProduct", async (req, res) => {
+router.post("/:idCart/products/:idProduct", async (req, res) => {
   try {
     const {idCart} = req.params;
     const {idProduct} = req.params;
+
     //const selectedCar = await cartManager.addProduct(idCart,idProduct);
     const cart = await cartservice.addProductToCart(idCart, idProduct);
-  
     res.status(201).json({
       status: "success",
       msg: "Carrito seleccionado",
@@ -109,5 +111,49 @@ router.delete('/:cid/products/:pid', async (req, res) => {
   }
 });
 
+router.delete('/:cid', async (req, res) => {
+  try {
+    const cid = req.params.cid;
+    const cart = await cartservice.cleanCart(cid);
+    return res.status(200).json({
+      status: 'success',
+      msg: 'Product removed from cart',
+      payload: cart,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      status: 'error',
+      msg: error.message,
+    });
+  }
+});
+
+router.put("/:cid", async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const { products} = req.body;
+    const cart = await cartservice.updateCart(cid, products);
+
+  res.status(200).json({ status: "success", message: "Cart updated successfully", cart });
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+});
+
+router.put("/:cid/products/:pid", async (req, res) => {
+  try {
+    const { cid, pid } = req.params;
+    const { quantity} = req.body;
+    const cart = await cartservice.updateProductQuantity(cid, pid, quantity);
+    res
+      .status(200)
+      .json({ status: "success", message: "Product quantity updated", cart });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+});
 
 module.exports = router;
