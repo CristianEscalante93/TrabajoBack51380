@@ -5,11 +5,16 @@ const router = Router();
 const { ProductsModel } = require("../DAO/models/products.model.js");
 //const productManager = new ProductManager("productsDB");
 const ProductService = require("../services/products.service.js");
+const { UserModel } = require("../DAO/models/users.model.js");
 const productService = new ProductService;
 
 
 router.get("/", async (req, res) => {
   try {
+    const email=req.session.email
+    const userFound = await UserModel.findOne({ email: email });
+    const firstName = userFound.firstName
+    console.log(firstName)
     const products = await productService.getAll(req.query);
 
     const { docs, ...rest } = products;
@@ -32,7 +37,7 @@ router.get("/", async (req, res) => {
     links.push({ label: i, href: `http://localhost:8080/?category=${category}&limit=${limit}&page=` + i });
   }
     // const products = await productManager.getProducts();
-    return res.render( "home", {products:prod, pagination: rest,links} );
+    return res.render( "home", {products:prod, pagination: rest,links,firstName} );
   } catch (error) {
     res.status(500).json({ msg: "Error"});
   } 
@@ -54,7 +59,7 @@ router.get('/:pid', async (req, res) => {
       _id: productQuery._id
       
     };
-    return res.status(200).render('productDetail', { product });
+    return res.status(200).render('productDetail', { product:product });
   } catch (error) {
     console.log(error);
   }

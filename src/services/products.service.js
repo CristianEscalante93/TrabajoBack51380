@@ -33,7 +33,7 @@ class ProductService {
   }
 
   async getOneById(id) {
-    const product = await ProductsModel.findOne({ _id: id });
+    const product = await ProductsModel.findOne({ _id:id});
     return product;
   }
 

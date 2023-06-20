@@ -1,12 +1,12 @@
 function isUser(req, res, next) {
-  if (req.session?.user?.email) {
+  if (req.session?.email) {
     return next();
   }
   return res.status(401).render('error', { error: 'error de autenticacion!' });
 }
 
 function isAdmin(req, res, next) {
-  if (req.session?.user?.isAdmin) {
+  if (req.session?.isAdmin) {
     return next();
   }
   return res.status(403).render('error', { error: 'error de autorización!' });

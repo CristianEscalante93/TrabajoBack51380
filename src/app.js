@@ -17,6 +17,7 @@ const ProductManager= require("./DAO/ProductManager.js");
 const {connectMongo, connectSocket} = require("./utils.js");
 const chatRouter = require("./routes/chats.router.js");
 const authRouter = require("./routes/auth.router.js");
+const sessionRouter = require("./routes/session.router.js");
 const productManager = new ProductManager();
 
 
@@ -50,16 +51,18 @@ app.use(
 //API REST CON JSON
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+app.use('/api/session', sessionRouter);
 
 //HTML RENDER
 app.get('/', (req, res) => {
   return res.redirect('http://localhost:8080/auth/login');
 });
-app.use("/", fixedProductRouter);
+app.use("/products", fixedProductRouter);
 app.use("/realTimeProducts", realTimeProductRouter);
 app.use('/chat', chatRouter);
-app.use("/carts", cartRouter);
 app.use('/auth', authRouter);
+app.use("/carts", cartRouter);
+
 
 
 

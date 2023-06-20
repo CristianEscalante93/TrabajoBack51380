@@ -32,9 +32,8 @@ authRouter.post('/login', async (req, res) => {
   if (!email || !pass) {
     return res.status(400).render('error', { error: 'Complete todos los campos' });
   }
-
   const userFound = await UserModel.findOne({ email: email });
-
+  console.log(userFound)
   if (userFound && userFound.pass == pass) {
     req.session.email = userFound.email;
     req.session.isAdmin = userFound.isAdmin;
@@ -50,11 +49,12 @@ authRouter.get('/register', (req, res) => {
 
 authRouter.post('/register', async (req, res) => {
   const { firstName, lastName, email, pass } = req.body;
+  console.log({ firstName, lastName, email, pass })
   if (!firstName || !lastName || !email || !pass) {
     return res.status(400).render('error', { error: 'Complete todos los campos' });
   }
   try {
-    await UserModel.create({ firstName, lastName, email, pass, isAdmin: false });
+    await UserModel.create({ firstName:firstName, lastName:lastName, email:email, pass:pass, isAdmin: false });
     req.session.email = email;
     req.session.isAdmin = false;
 
@@ -64,6 +64,7 @@ authRouter.post('/register', async (req, res) => {
     return res.status(400).render('error', { error: 'No se pudo crear el usuario. Use otro email' });
   }
 });
+
 
 
 module.exports = authRouter;
