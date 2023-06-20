@@ -1,6 +1,14 @@
 <div>
   <h2 class="text-center my-4">Lista de Productos</h2>
-  <h3>Bienvenido {{firstName}}!!!!!</h3>
+  {{#if firstName}}
+  <h3>Bienvenido {{firstName}}</h3>
+  {{#if userSessionisAdmin}}
+    <h5>Admin</h5>
+  {{else}}
+    <h5>User</h5>
+  {{/if}}
+  <a href='/auth/logout'>Cerrar Sesion</a>
+{{/if}}
     {{#each products}}
       <div class="card mb-3" style="max-width: 540px;">
   <div class="row g-0">

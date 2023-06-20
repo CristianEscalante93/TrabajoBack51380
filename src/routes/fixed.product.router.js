@@ -14,6 +14,7 @@ router.get("/", async (req, res) => {
     const email=req.session.email
     const userFound = await UserModel.findOne({ email: email });
     const firstName = userFound.firstName
+    const userSessionisAdmin = req.session.isAdmin;
     console.log(firstName)
     const products = await productService.getAll(req.query);
 
@@ -37,7 +38,7 @@ router.get("/", async (req, res) => {
     links.push({ label: i, href: `http://localhost:8080/?category=${category}&limit=${limit}&page=` + i });
   }
     // const products = await productManager.getProducts();
-    return res.render( "home", {products:prod, pagination: rest,links,firstName} );
+    return res.render( "home", {products:prod, pagination: rest,links,firstName,userSessionisAdmin} );
   } catch (error) {
     res.status(500).json({ msg: "Error"});
   } 
