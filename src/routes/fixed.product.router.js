@@ -11,10 +11,10 @@ const productService = new ProductService;
 
 router.get("/", async (req, res) => {
   try {
-    const email=req.session.email
+    const email=req.user.email
     const userFound = await UserModel.findOne({ email: email });
     const firstName = userFound.firstName
-    const userSessionisAdmin = req.session.isAdmin;
+    const userSessionisAdmin = req.user.isAdmin;
     console.log(firstName)
     const products = await productService.getAll(req.query);
 

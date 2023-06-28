@@ -6,6 +6,8 @@ const path = require("path");
 const { Server } = require("socket.io");
 const cookieParser= require('cookie-parser')
 const MongoStore= require('connect-mongo')
+const { iniPassport }= require('./config/passport.config.js');
+const passport= require('passport');
 
 const productsRouter = require("./routes/products.router.js");
 const cartsRouter = require("./routes/cart.router.js");
@@ -18,12 +20,20 @@ const {connectMongo, connectSocket} = require("./utils.js");
 const chatRouter = require("./routes/chats.router.js");
 const authRouter = require("./routes/auth.router.js");
 const sessionRouter = require("./routes/session.router.js");
+const sessionsRouter = require("./routes/sessions.router.js");
 const productManager = new ProductManager();
 
 
 
 const app= express();
 const PORT= 8080;
+
+const httpServer=  app.listen(PORT, ()=>{
+  console.log(`listening on port: http://localhost:${PORT}`);
+})
+
+connectMongo();
+connectSocket(httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -35,7 +45,7 @@ app.engine("handlebars", handlebars.engine());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "handlebars");
 
-app.use(cookieParser());
+// app.use(cookieParser());
 
 //session
 app.use(
@@ -47,11 +57,16 @@ app.use(
   })
 );
 
+iniPassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 //API REST CON JSON
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use('/api/session', sessionRouter);
+app.use('/api/sessions', sessionsRouter);
 
 //HTML RENDER
 app.get('/', (req, res) => {
@@ -62,16 +77,6 @@ app.use("/realTimeProducts", realTimeProductRouter);
 app.use('/chat', chatRouter);
 app.use('/auth', authRouter);
 app.use("/carts", cartRouter);
-
-
-
-
-const httpServer=  app.listen(PORT, ()=>{
-  console.log(`listening on port: http://localhost:${PORT}`);
-})
-
-connectMongo();
-connectSocket(httpServer);
 
 app.get("*", (req, res) => {
   return res.status(404).json({
