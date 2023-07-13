@@ -2,7 +2,7 @@
   <h2 class="text-center my-4">Lista de Productos</h2>
   {{#if firstName}}
   <h3>Bienvenido {{firstName}}</h3>
-  <a href='/carts/{{cartId}}'>Ver carrito</a>
+  <a href='/carts/{{cartId}}' class="cartInfo" id="{{cartId}}">Ver carrito</a>
   {{#if userSessionisAdmin}}
     <h5>Admin</h5>
   {{else}}
@@ -27,7 +27,7 @@
         <p class="card-text"><small class="text-body-secondary">id: {{_id}}</small></p>
         {{!-- <a href="#" onclick="addCart('{{_id}}')">Agregar🛒</a> --}}
         
-        <button type="button" class="btn btn-primary" onclick="addCart('{{this.cartId}}')">Agregar🛒</button>
+        <button type="button" class="btn btn-primary" onclick="addCart('{{_id}}')">Agregar🛒</button>
         <a href='/products/{{_id}}'>Detalle del producto</a>
       </div>
     </div>

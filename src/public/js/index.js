@@ -41,19 +41,18 @@ function deleteProduct(productId) {
 //     alert((await response.json()).error)
 //   }
 // }
+const cartInfoElement = document.getElementsByClassName('cartInfo')[0];
 
-const addCart=(id,cartId)=> {
-  
+  function addCart(id){
+  const cartId= cartInfoElement?.getAttribute('id');
   console.log(id)
   console.log(cartId)
-  fetch(`/api/carts/${cartId}/products/${id}`,{
+  const response= fetch(`/api/carts/${cartId}/products/${id}`,{
     method: 'POST'
   });
-  if(response.ok){
+  
     alert('Producto agregado')
-  }else{
-    alert(( response.json()).error)
-  }
+
 }
 
 formProducts.onsubmit = (e) => {
