@@ -11,30 +11,48 @@ const inputStock = document.getElementById("formStock");
 const inputCategory = document.getElementById("formCategory");
 const inputThumbnail = document.getElementById("formThumbnail");
 
+
 function deleteProduct(productId) {
   console.log(productId)
   socket.emit("deleteProduct", productId);
 };
 
 
-async function addCart(id) {
-  let cartId = localStorage.getItem('cartId')
-  if(!cartId){
-    const response= await fetch('/api/carts',{
-      method:'post'
-    })
-    const body= await response.json()
-    localStorage.setItem('cartId', body.payload)
-    // console.log(body.payload)
-    cartId=body.payload
-  }
-  const response = await fetch(`/api/carts/${cartId}/products/${id}`,{
-    method: 'post'
+// async function addCart(id) {
+  
+//   let cartId = localStorage.getItem('cartId')
+//   if(!cartId){
+//     const response= await fetch('/api/carts',{
+//       method:'post'
+//     })
+//     const body= await response.json()
+//     localStorage.setItem('cartId', body.payload)
+//     // console.log(body.payload)
+//     cartId=body.payload
+//   }
+//   console.log(id)
+//   console.log(cartId)
+//   const response = await fetch(`/api/carts/${cartId}/products/${id}`,{
+//     method: 'post'
+//   });
+//   if(response.ok){
+//     alert('Producto agregado')
+//   }else{
+//     alert((await response.json()).error)
+//   }
+// }
+
+const addCart=(id,cartId)=> {
+  
+  console.log(id)
+  console.log(cartId)
+  fetch(`/api/carts/${cartId}/products/${id}`,{
+    method: 'POST'
   });
   if(response.ok){
     alert('Producto agregado')
   }else{
-    alert((await response.json()).error)
+    alert(( response.json()).error)
   }
 }
 

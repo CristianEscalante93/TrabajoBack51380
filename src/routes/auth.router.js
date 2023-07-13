@@ -37,7 +37,7 @@ authRouter.post('/login', passport.authenticate('login', { failureRedirect: '/au
   if (!req.user) {
     return res.json({ error: 'invalid credentials' });
   }
-  req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin };
+  req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin , cartID: req.user.cartID};
   return res.redirect('/products');
 });
 
@@ -55,7 +55,7 @@ authRouter.post('/register', passport.authenticate('register', { failureRedirect
   if (!req.user) {
     return res.json({ error: 'something went wrong' });
   }
-  req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin };
+  req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName,age: req.user.age, isAdmin: req.user.isAdmin, cartID: req.user.cartID };
 
   return res.redirect('/auth/perfil');
 });

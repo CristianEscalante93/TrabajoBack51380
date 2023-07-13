@@ -12,10 +12,11 @@ const productService = new ProductService;
 router.get("/", async (req, res) => {
   try {
     const email=req.user.email
+    const cartId= req.user.cartID
     const userFound = await UserModel.findOne({ email: email });
     const firstName = userFound.firstName
     const userSessionisAdmin = req.user.isAdmin;
-    console.log(firstName)
+    console.log(cartId)
     const products = await productService.getAll(req.query);
 
     const { docs, ...rest } = products;
@@ -38,7 +39,7 @@ router.get("/", async (req, res) => {
     links.push({ label: i, href: `http://localhost:8080/?category=${category}&limit=${limit}&page=` + i });
   }
     // const products = await productManager.getProducts();
-    return res.render( "home", {products:prod, pagination: rest,links,firstName,userSessionisAdmin} );
+    return res.render( "home", {products:prod, pagination: rest,links,firstName,userSessionisAdmin,cartId} );
   } catch (error) {
     res.status(500).json({ msg: "Error"});
   } 

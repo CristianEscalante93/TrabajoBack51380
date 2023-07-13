@@ -5,6 +5,8 @@ const { UserModel }= require('../DAO/models/users.model.js');
 const GitHubStrategy= require('passport-github2');
 const LocalStrategy = local.Strategy;
 const fetch= require('node-fetch');
+const CartService = require('../services/carts.service.js');
+const cartService = new CartService();
 
 function iniPassport() {
 
@@ -39,17 +41,20 @@ function iniPassport() {
       },
       async (req, username, password, done) => {
         try {
-          const { email, firstName, lastName } = req.body;
+          const { email, firstName, lastName,age } = req.body;
           let user = await UserModel.findOne({ email: username });
           if (user) {
             console.log('User already exists');
             return done(null, false);
           }
-
+          const newCart = await cartService.createCart();
+          const cartID = newCart._id.toString();
           const newUser = {
             email,
             firstName,
             lastName,
+            age,
+            cartID,
             isAdmin: false,
             password: createHash(password),
           };
@@ -95,12 +100,17 @@ passport.use(
 
         let user = await UserModel.findOne({ email: profile.email });
         if (!user) {
+          const newCart = await cartService.createCart();
+          const cartID = newCart._id.toString();
+
           const newUser = {
             email: profile.email,
             firstName: profile._json.name || profile._json.login || 'noname',
             lastName: 'nolast',
+            age: profile.age,
             isAdmin: false,
             password: 'nopass',
+            cartID: cartID || ''
           };
           let userCreated = await UserModel.create(newUser);
           console.log('User Registration succesful');

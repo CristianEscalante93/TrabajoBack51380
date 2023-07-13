@@ -20,11 +20,15 @@ const schema = new Schema({
     unique: true,
   },
 
+  age: {type: Number, required: false},
+
   password: {
     type: String,
     required: true,
     max: 100,
   },
+  
+  cartID: {type: String, required: false},
 
   isAdmin: {
     type: Boolean,

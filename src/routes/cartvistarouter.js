@@ -12,6 +12,7 @@ const cartservice= new CartService
 router.get("/:cid", async (req, res, next) => {
   try {
     const { cid } = req.params;
+    console.log(cid)
     const cart = await cartservice.getCartById(cid);
 
     const simplifiedCart = cart.products.map((item) => {
