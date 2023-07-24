@@ -2,67 +2,31 @@ const express= require('express');
 const { UserModel }= require('./../DAO/models/users.model.js');
 const { isAdmin, isUser }= require('../middlewares/auth.js');
 const passport= require('passport');
+const UserController = require ("../controllers/user.controller.js")
+const userController = new UserController
 
 const authRouter = express.Router();
 
-authRouter.get('/session', (req, res) => {
-  return res.send(JSON.stringify(req.session));
-});
+authRouter.get('/session', userController.getSession);
 
-authRouter.get('/perfil', isUser, (req, res) => {
-  const user = { email: req.user.email, isAdmin: req.user.isAdmin };
-  return res.render('perfil', { user: user });
-});
+authRouter.get('/perfil', isUser, userController.getPerfil);
 
-authRouter.get('/admin', isUser, isAdmin, (req, res) => {
-  return res.send('datos clasificados');
-});
+authRouter.get('/admin', isUser, isAdmin, userController.getAdmin);
 
-authRouter.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).render('error', { error: 'No se pudo cerrar su sesión :(' });
-    } else {
-      return res.redirect('/auth/login');
-    }
-  });
-});
+authRouter.get('/logout', userController.getLogOut);
 
-authRouter.get('/login', (req, res) => {
-  return res.render('login', {});
-});
+authRouter.get('/login', userController.getLogin);
 
-authRouter.post('/login', passport.authenticate('login', { failureRedirect: '/auth/faillogin' }), async (req, res) => {
-  
-  if (!req.user) {
-    return res.json({ error: 'invalid credentials' });
-  }
-  req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin , cartID: req.user.cartID};
-  return res.redirect('/products');
-});
+authRouter.post('/login', userController.getAuthLogin, userController.postLogin);
 
-authRouter.get('/faillogin', async (req, res) => {
-  return res.json({ error: 'fail to login' });
-});
+authRouter.get('/faillogin', userController.getFailLogin);
 
 
-authRouter.get('/register', (req, res) => {
-  return res.render('register', {});
-});
+authRouter.get('/register', userController.getRegister);
 
-authRouter.post('/register', passport.authenticate('register', { failureRedirect: '/auth/failregister' }), (req, res) => {
+authRouter.post('/register', userController.getAuthRegister, userController.postRegister);
 
-  if (!req.user) {
-    return res.json({ error: 'something went wrong' });
-  }
-  req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName,age: req.user.age, isAdmin: req.user.isAdmin, cartID: req.user.cartID };
-
-  return res.redirect('/auth/perfil');
-});
-
-authRouter.get('/failregister', async (req, res) => {
-  return res.json({ error: 'fail to register' });
-});
+authRouter.get('/failregister', userController.getFailRegister);
 
 
 module.exports = authRouter;

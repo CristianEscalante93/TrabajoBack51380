@@ -8,6 +8,9 @@ const cookieParser= require('cookie-parser')
 const MongoStore= require('connect-mongo')
 const { iniPassport }= require('./config/passport.config.js');
 const passport= require('passport');
+require('dotenv').config();
+
+
 
 const productsRouter = require("./routes/products.router.js");
 const cartsRouter = require("./routes/cart.router.js");
@@ -19,14 +22,15 @@ const ProductManager= require("./DAO/ProductManager.js");
 const {connectMongo, connectSocket} = require("./utils.js");
 const chatRouter = require("./routes/chats.router.js");
 const authRouter = require("./routes/auth.router.js");
-const sessionRouter = require("./routes/session.router.js");
 const sessionsRouter = require("./routes/sessions.router.js");
 const productManager = new ProductManager();
 
 
+const MONGO_USER = process.env.MONGO_USER;
+const MONGO_PASS = process.env.MONGO_PASS;
 
 const app= express();
-const PORT= 8080;
+const PORT= process.env.Port;
 
 const httpServer=  app.listen(PORT, ()=>{
   console.log(`listening on port: http://localhost:${PORT}`);
@@ -50,7 +54,7 @@ app.set("view engine", "handlebars");
 //session
 app.use(
   session({
-    store: MongoStore.create({ mongoUrl: 'mongodb+srv://CristianEscalante:PmafqBcyCLDtFjEa@coderbackend.npm2s8y.mongodb.net/Ecommerce?retryWrites=true&w=majority', ttl: 7200 }),
+    store: MongoStore.create({ mongoUrl: 'mongodb+srv://'+MONGO_USER+':'+MONGO_PASS+'@coderbackend.npm2s8y.mongodb.net/Ecommerce?retryWrites=true&w=majority', ttl: 7200 }),
     secret: 'un-re-secreto',
     resave: true,
     saveUninitialized: true,
@@ -65,7 +69,6 @@ app.use(passport.session());
 //API REST CON JSON
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use('/api/session', sessionRouter);
 app.use('/api/sessions', sessionsRouter);
 
 //HTML RENDER

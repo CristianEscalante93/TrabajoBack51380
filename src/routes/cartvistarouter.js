@@ -3,37 +3,10 @@ const { Router } = require("express");
 const router = Router();
 // const ProductManager= require("../DAO/ProductManager.js");
 // const productManager = new ProductManager();
-const CartManager= require("../cartsManager.js");
-const CartService = require("../services/carts.service.js");
-// const cartManager = new CartManager();
+//const CartManager= require("../cartsManager.js");
+const CartsController = require ("../controllers/carts.controller.js")
+const cartsController = new CartsController
 
-const cartservice= new CartService
-
-router.get("/:cid", async (req, res, next) => {
-  try {
-    const { cid } = req.params;
-    console.log(cid)
-    const cart = await cartservice.getCartById(cid);
-
-    const simplifiedCart = cart.products.map((item) => {
-      return {
-        title: item.product.title,
-        price: item.product.price,
-        quantity: item.quantity,
-        category: item.product.category,
-        code:item.product.code,
-        thumbnail: item.product.thumbnail,
-        stock: item.product.stock,
-        description: item.product.description
-      };
-    });
-    console.log(cart)
-    res.render("cart", { cart: simplifiedCart });
-  } catch (error) {
-    next(error);
-  }
-});
-
-
+router.get("/:cid", cartsController.cartIdVista);
 
 module.exports = router;

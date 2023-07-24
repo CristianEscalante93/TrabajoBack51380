@@ -7,6 +7,11 @@ const LocalStrategy = local.Strategy;
 const fetch= require('node-fetch');
 const CartService = require('../services/carts.service.js');
 const cartService = new CartService();
+require('dotenv').config();
+
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+
 
 function iniPassport() {
 
@@ -76,8 +81,8 @@ passport.use(
   'github',
   new GitHubStrategy(
     {
-      clientID: 'Iv1.165aecd7f2d2d45a',
-      clientSecret: '119566cd8b6a2e07d7b18f6125e5a09418a1929b',
+      clientID: GITHUB_CLIENT_ID,
+      clientSecret: GITHUB_CLIENT_SECRET,
       callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
     },
     async (accesToken, _, profile, done) => {
