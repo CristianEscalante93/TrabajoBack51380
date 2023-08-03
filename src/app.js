@@ -9,6 +9,7 @@ const MongoStore= require('connect-mongo')
 const { iniPassport }= require('./config/passport.config.js');
 const passport= require('passport');
 require('dotenv').config();
+const cors= require('cors');
 
 
 
@@ -18,7 +19,7 @@ const cartRouter = require("./routes/cartvistarouter.js")
 const fixedProductRouter = require("./routes/fixed.product.router.js");
 const realTimeProductRouter = require("./routes/real.time.product.router.js");
 
-const ProductManager= require("./DAO/ProductManager.js");
+const ProductManager= require("./DAO/memory/ProductManager.js");
 const {connectMongo, connectSocket} = require("./utils.js");
 const chatRouter = require("./routes/chats.router.js");
 const authRouter = require("./routes/auth.router.js");
@@ -28,6 +29,7 @@ const productManager = new ProductManager();
 
 const MONGO_USER = process.env.MONGO_USER;
 const MONGO_PASS = process.env.MONGO_PASS;
+
 
 const app= express();
 const PORT= process.env.Port;
@@ -43,6 +45,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
 
 
 app.engine("handlebars", handlebars.engine());

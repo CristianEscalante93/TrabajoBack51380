@@ -1,5 +1,4 @@
 const express= require('express');
-const { UserModel }= require('./../DAO/models/users.model.js');
 const { isAdmin, isUser }= require('../middlewares/auth.js');
 const passport= require('passport');
 const UserController = require ("../controllers/user.controller.js")
@@ -17,14 +16,14 @@ authRouter.get('/logout', userController.getLogOut);
 
 authRouter.get('/login', userController.getLogin);
 
-authRouter.post('/login', userController.getAuthLogin, userController.postLogin);
+authRouter.post('/login', passport.authenticate('login', { failureRedirect: '/auth/faillogin' }), userController.postLogin);
 
 authRouter.get('/faillogin', userController.getFailLogin);
 
 
 authRouter.get('/register', userController.getRegister);
 
-authRouter.post('/register', userController.getAuthRegister, userController.postRegister);
+authRouter.post('/register', passport.authenticate('register', { failureRedirect: '/auth/failregister' }), userController.postRegister);
 
 authRouter.get('/failregister', userController.getFailRegister);
 

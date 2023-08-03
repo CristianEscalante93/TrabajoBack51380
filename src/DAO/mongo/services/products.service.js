@@ -1,4 +1,4 @@
-const { ProductsModel } = require('../DAO/models/products.model.js');
+const { ProductsModel } = require('../models/products.model.js');
 const {paginate} = require('mongoose-paginate-v2')
 class ProductService {
   validateProduct(title, description, price, thumbnail, code, stock, category, status) {

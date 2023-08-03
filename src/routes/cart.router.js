@@ -7,13 +7,14 @@ const router = Router();
 // const cartManager = new CartManager();
 // const CartService = require("../services/carts.service.js");
 // const cartservice= new CartService
-const CartsController = require ("../controllers/carts.controller.js")
+const CartsController = require ("../controllers/carts.controller.js");
+const { isUser } = require("../middlewares/auth.js");
 const cartsController = new CartsController
 
 router.get('/', cartsController.getCartApi);
 router.post("/", cartsController.postCartApi);
 router.get("/:idCart/products", cartsController.getIdCartApi);
-router.post("/:idCart/products/:idProduct", cartsController.postProductInCart);
+router.post("/:idCart/products/:idProduct", isUser,cartsController.postProductInCart);
 router.delete('/:cid/products/:pid', cartsController.deleteProductInCart);
 router.delete('/:cid', cartsController.deleteCart);
 router.put("/:cid", cartsController.updateCart);

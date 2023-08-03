@@ -5,3 +5,57 @@
 .linea {
   border-bottom: blueviolet 1px solid;
 }
+
+
+.cardsBorder{
+  border: 2px solid darkorange;
+  color: #ffc107;
+}
+.cardsBorder-dashboard{
+  border: 1px solid #ffc107;
+  color: #ffc107;
+}
+
+.register{
+  text-align: -moz-center;
+  text-align: -webkit-center;
+  padding-top: 10vh;
+}
+
+
+#cart-product-list{
+  border-left: 2px darkorange solid;
+  background-color: black
+}
+
+.backgroundTable{
+  background-color:#212529
+}
+
+.card-header-dashboard{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  
+}
+.card-header-dashboard-style{
+  border-bottom: 5px solid darkorange;
+  background-color:#212529;
+}
+.card-body-style{
+  background-color: ghostwhite;
+}
+.productTable{
+  text-align: -moz-center;
+  text-align: -webkit-center;
+  padding-top: 2.5vh;
+}
+
+.dinamic-product-list {
+  display: flex;
+  text-align: center;
+  align-items: baseline;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}

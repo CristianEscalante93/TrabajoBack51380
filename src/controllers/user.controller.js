@@ -1,19 +1,15 @@
 const passport= require('passport');
-const { UserModel }= require('./../DAO/models/users.model.js');
+const { UserModel }= require('./../DAO/mongo/models/users.model.js');
 const { isAdmin, isUser }= require('../middlewares/auth.js');
+const UserDTO = require('../DAO/DTO/user.DTO.js');
 
 class UserController{
-  getGitHub(req,res){
-    passport.authenticate('github', { scope: ['user:email'] })
-  }
 
-  getGitHubCallback(req,res){
-    passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+  getGitHubCallback(req, res){
       req.session.user = req.user;
       // Successful authentication, redirect home.
       res.redirect('/products');
     }
-  }
 
   getShow(req,res){
     return res.send(JSON.stringify(req.session))
@@ -21,7 +17,8 @@ class UserController{
 
   getCurrent(req,res){
     console.log(req.session);
-    return res.status(200).json({ user: req.session.user });
+    const user = new UserDTO(req.session.user)
+    return res.status(200).json(user);
   }
 
   getSession(req,res){
@@ -51,9 +48,6 @@ class UserController{
     return res.render('login', {});
   }
 
-  getAuthLogin(req,res){
-    passport.authenticate('login', { failureRedirect: '/auth/faillogin' })
-  }
 
   postLogin(req,res){
     if (!req.user) {
@@ -71,9 +65,6 @@ class UserController{
     return res.render('register', {});
   }
 
-  getAuthRegister(req,res){
-    passport.authenticate('register', { failureRedirect: '/auth/failregister' });
-  }
 
   postRegister(req,res){
     if (!req.user) {

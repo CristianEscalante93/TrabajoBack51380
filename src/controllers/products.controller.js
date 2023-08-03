@@ -1,5 +1,5 @@
-const ProductService = require("../services/products.service.js");
-const { UserModel } = require("../DAO/models/users.model.js");
+const ProductService = require("../DAO/mongo/services/products.service.js");
+const { UserModel } = require("../DAO/mongo/models/users.model.js");
 const productService = new ProductService;
 
 class ProductsController {

@@ -37,8 +37,8 @@ const connectMongo =async function(){
 
 //SOCKET
 const { Server } = require("socket.io");
-const { ChatModel } = require("./DAO/models/messages.model.js");
-const ProductService = require("./services/products.service.js");
+const { ChatModel } = require("./DAO/mongo/models/messages.model.js");
+const ProductService = require("./DAO/mongo/services/products.service.js");
 
 const productService = new ProductService;
 

@@ -1,11 +1,11 @@
 const passport= require('passport');
 const local = require('passport-local');
 const { createHash, isValidPassword }= require('../utils.js');
-const { UserModel }= require('../DAO/models/users.model.js');
+const { UserModel }= require('../DAO/mongo/models/users.model.js');
 const GitHubStrategy= require('passport-github2');
 const LocalStrategy = local.Strategy;
 const fetch= require('node-fetch');
-const CartService = require('../services/carts.service.js');
+const CartService = require('../DAO/mongo/services/carts.service.js');
 const cartService = new CartService();
 require('dotenv').config();
 
@@ -14,12 +14,13 @@ const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 
 function iniPassport() {
-
+console.log("arranca passsport")
 //LOCAL
   passport.use(
     'login',
     new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
       try {
+        console.log("logueando")
         const user = await UserModel.findOne({ email: username });
         if (!user) {
           console.log('User Not Found with username (email) ' + username);

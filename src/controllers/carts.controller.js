@@ -1,4 +1,4 @@
-const CartService = require("../services/carts.service.js");
+const CartService = require("../DAO/mongo/services/carts.service.js");
 const cartservice= new CartService
 
 class CartsController {
@@ -6,7 +6,7 @@ class CartsController {
   async cartIdVista(req,res){
     try {
       const { cid } = req.params;
-      console.log(cid)
+      const cartId= req.user.cartID;
       const cart = await cartservice.getCartById(cid);
   
       const simplifiedCart = cart.products.map((item) => {
@@ -21,7 +21,7 @@ class CartsController {
           description: item.product.description
         };
       });
-      res.render("cart", { cart: simplifiedCart });
+      res.render("cart", { cart: simplifiedCart, cartId });
     } catch (error) {
       next(error);
     }
