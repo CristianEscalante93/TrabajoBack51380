@@ -1,28 +1,22 @@
 const { TicketModel } = require("../models/ticket.model");
+const CartService = require("./carts.service.js")
+const cartService= new CartService
 
 class TicketService{
-  async addTicket(newTicket) {
-    try {
-    const ticket = await TicketModel.create(newTicket);
-    ticket.code = ticket._id.toString();
-    await TicketModel.findByIdAndUpdate(ticket._id, { code: ticket.code });
-    return ticket;
-    } catch (err) {
-      throw (`FALLO EN MODELO.`);
-    }
-  }
 
-  async addTicket2(purchaser, ticket, totalCart) {
+  async addTicket2(purchaser, ticket1, totalCart) {
     try {
       const ticketData = {
         code: "", 
         purchase_datetime: new Date(), 
         amount: totalCart,
         purchaser: purchaser,
-        products : ticket            
-    };              
-    const savedTicket = await addTicket(ticketData);
-    return savedTicket;
+        products : ticket1            
+    };  
+    let ticket = await TicketModel.create(ticketData);
+    let code = ticket._id.toString();
+    await TicketModel.findByIdAndUpdate(ticket._id, { code: code });
+    return {ticket,code};            
     } catch (error) {
     throw (`FALLO EN SERVICIO. ${error}`);
     }
@@ -35,15 +29,16 @@ async  stockCartProductsForTicket(cartId) {
         let cartWithOutStock = [];
         let totalPriceTicket = 0;
 
-        cartProductsTicket.cartProducts.forEach((item) => {
-            const idProduct = item.idProduct;
-            const quantityInCart = parseInt(item.quantity);
-            const availableStock = parseInt(idProduct.stock);
-            const ticketAmount = parseInt(idProduct.price);
-
+        cartProductsTicket.products.forEach((item) => {
+            const idProduct = item.product._id.toString();
+            const title = item.product.title
+            const quantityInCart = parseInt(item.quantity);  
+            const availableStock = parseInt(item.product.stock);
+            const ticketAmount = parseInt(item.product.price);
+            
             if (quantityInCart <= availableStock) {
                 const totalPriceProduct = ticketAmount * quantityInCart;
-                cartWithStock.push({ idProduct, quantity: quantityInCart, totalPrice: totalPriceProduct });
+                cartWithStock.push({ idProduct, quantity: quantityInCart, totalPrice: totalPriceProduct ,title});
                 totalPriceTicket += totalPriceProduct;
             } else {
                 cartWithOutStock.push({ idProduct, quantity: quantityInCart });
@@ -52,6 +47,7 @@ async  stockCartProductsForTicket(cartId) {
 
         return { cartWithStock, cartWithOutStock, totalPriceTicket };
     } catch (err) {
+      console.log(err)
         throw new Error("ERROR.");
     }
 }

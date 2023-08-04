@@ -15,13 +15,25 @@
             <div class="card-header-dashboard">
               <div class=" cardsBorder-dashboard col-4">
                 <p class="card-header card-header-dashboard-style ">Tu pedido</p>
-                {{#each cartProducts.cartProducts}}            
-                  <div class="card-body">  
-                    
-                    <p class="card-text"> {{idProduct.title}} x {{quantity}}</p> 
-                    
-                  </div>
-                {{/each}}
+
+        {{#each products}}
+      <div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{thumbnail}}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{title}}</h5>
+        <p class="card-text">${{price}}</p>
+        <p class="card-text"> {{title}} x {{quantity}}</p> 
+        <p class="card-text">${{total}}</p> 
+        <p class="card-text"><small class="text-body-secondary">stock: {{stock}}</small></p>
+      </div>
+    </div>
+  </div>
+</div>
+    {{/each}}
               </div>                   
               <div class=" cardsBorder-dashboard col-3">
                 {{ticketPreview.totalPriceCart2}}
@@ -43,8 +55,10 @@
                 <p class="card-text"><b>TOTAL</b> =>> $ {{ticketPreview.totalPriceTicket}}</p>
               </div>               
             </div>                  
-            <a style="text-align: left" href='/productsToCart'>Volver</a>  ---------  
-            <a href='/finishticket'>Finalizar<a></a>
+            <a style="text-align: left" href='/carts/{{userCartId }}'>Volver</a>  ---------  
+
+            <a href='/carts/{{userCartId}}/purchase/ticket'>Finalizar</a>
+
             <br />
         </div>
       </div>

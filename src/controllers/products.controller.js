@@ -15,6 +15,7 @@ class ProductsController {
   
       const { docs, ...rest } = products;
       const {limit, page, category, sort }= req.query
+
       let prod = docs.map((doc) => {
         return {
           title: doc.title,
@@ -27,6 +28,7 @@ class ProductsController {
           _id: doc._id
         };
       });
+      
       let links = [];
     for (let i = 1; i < rest.totalPages + 1; i++) {
   

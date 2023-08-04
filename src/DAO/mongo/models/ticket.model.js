@@ -3,7 +3,7 @@ const { Schema, model }= require('mongoose');
 
 const schema = new Schema(
   {
-    code: { type: String, unique: true, required: true},
+    code: { type: String, unique: true},
     purchase_datetime: { type: Date},
     amount: { type: Number},
     purchaser: { type: String},

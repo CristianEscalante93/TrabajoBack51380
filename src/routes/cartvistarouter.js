@@ -13,6 +13,7 @@ const ticketsController = new TicketsController
 
 router.get("/:cid", cartsController.cartIdVista);
 router.get("/:cid/purchase", isUser,ticketsController.checkOut);
-router.get("/finishticket", isUser, ticketsController.addTicket);
+router.get("/:cid/purchase/ticket", isUser, ticketsController.addTicket);
+
 
 module.exports = router;

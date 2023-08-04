@@ -6,10 +6,9 @@ const ticketService= new TicketService;
 
 class TicketsController {
 
-
-
   async addTicket(req, res) {  
       try {
+        const {cid}= req.params
         const user = req.session.user
         const userCartId = user.cartID;
         const purchaser = user.email;
@@ -17,10 +16,15 @@ class TicketsController {
         const ticket = ticketPreview.cartWithStock;
         const totalCart = ticketPreview.totalPriceTicket;
         const oldProductsCart = ticketPreview.cartWithOutStock;
-        await cartService.updateCart(userCartId, oldProductsCart );
-        await ticketService.addTicket2(purchaser, ticket, totalCart);
-        return res.render('finishticket', { ticket, totalCart, purchaser });      
+        
+        await cartService.updateCart(userCartId, oldProductsCart);
+        const response = await ticketService.addTicket2(purchaser, ticket, totalCart);
+        const savedTicket= response.ticket
+        const code = response.code
+        
+        return res.render("finishticket",{ ticket, totalCart, purchaser,savedTicket,code});      
       }catch (err) {
+        console.log(err)
         res.status(500).json({ Error: `${err}` });
       };
   };
@@ -29,23 +33,28 @@ class TicketsController {
     try {
       const user = req.session.user;
       const userCartId = user.cartID;
-      console.log(userCartId,user.cartID)
+      
       const cartProducts = await cartService.getCartById(userCartId);
-      const simplifiedCart = cartProducts.products.map((item) => {
+      const product = cartProducts.products
+      
+      let prod = product.map((doc) => {
         return {
-          title: item.product.title,
-          price: item.product.price,
-          quantity: item.quantity,
-          category: item.product.category,
-          code:item.product.code,
-          thumbnail: item.product.thumbnail,
-          stock: item.product.stock,
-          description: item.product.description
+          title: doc.product.title,
+          description: doc.product.description,
+          price: doc.product.price,
+          thumbnail: doc.product.thumbnail,
+          code: doc.product.code,
+          stock: doc.product.stock,
+          category: doc.product.category,
+          _id: doc.product._id,
+          quantity: doc.quantity,
+          total:doc.product.price * doc.quantity
         };
       });
-      console.log(simplifiedCart)
+
       const ticketPreview = await ticketService.stockCartProductsForTicket(userCartId);
-      return res.render('cart', { cart: simplifiedCart,user, cartProducts,ticketPreview });
+      
+      return res.render("ticket", { user, products:prod,ticketPreview,userCartId });
     }catch (err) {
       res.status(500).json({ err });
     };
