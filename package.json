@@ -39,6 +39,7 @@
     "sweetalert2": "^11.6.13"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "handlebars": "^4.5.0"
   }
 }

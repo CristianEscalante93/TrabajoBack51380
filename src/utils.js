@@ -47,14 +47,16 @@ function connectSocket(httpServer) {
   const socketServer = new Server(httpServer);
 
   socketServer.on("connection", socket=>{
-    socket.on("newProduct", async ({ title, description, price, thumbnail, code, stock, category, status })=>{
+    socket.on("newProduct", async (newProduct)=>{
       try {
         //await productManager.addProduct(product);
         //const list = await productManager.getProducts();
-
-        const { title, description, price, thumbnail, code, stock, category, status } = req.body;
+        
+        const { title, description, price, thumbnail, code, stock, category, status=true } = newProduct;
         const addProduct = await productService.createOne( title, description, price, thumbnail, code, stock, category, status );
-        const list = await productService.getAll();
+        
+        const list = await productService.getAll(req);
+        console.log(list)
 
         socketServer.emit("products", list)
       } catch (error) {
@@ -67,9 +69,10 @@ function connectSocket(httpServer) {
         //await productManager.deleteProduct(id);
         //const list = await productManager.getProducts();
 
+      
         await productService.deleteOne(id);
         const list = await productService.getAll();
-
+        console.log(list)
         socketServer.emit("products", list)
       } catch (error) {
       }

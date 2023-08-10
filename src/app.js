@@ -10,6 +10,7 @@ const { iniPassport }= require('./config/passport.config.js');
 const passport= require('passport');
 require('dotenv').config();
 const cors= require('cors');
+const errorHandler= require('./middlewares/error.js');
 
 
 
@@ -24,6 +25,7 @@ const {connectMongo, connectSocket} = require("./utils.js");
 const chatRouter = require("./routes/chats.router.js");
 const authRouter = require("./routes/auth.router.js");
 const sessionsRouter = require("./routes/sessions.router.js");
+const testFaker = require("./routes/testFaker.js");
 const productManager = new ProductManager();
 
 
@@ -83,6 +85,10 @@ app.use("/realTimeProducts", realTimeProductRouter);
 app.use('/chat', chatRouter);
 app.use('/auth', authRouter);
 app.use("/carts", cartRouter);
+
+//PRUEBA
+app.use("/mockingproducts", testFaker)
+app.use(errorHandler);
 
 app.get("*", (req, res) => {
   return res.status(404).json({

@@ -13,34 +13,10 @@ const inputThumbnail = document.getElementById("formThumbnail");
 
 
 function deleteProduct(productId) {
-  console.log(productId)
+  
   socket.emit("deleteProduct", productId);
 };
 
-
-// async function addCart(id) {
-  
-//   let cartId = localStorage.getItem('cartId')
-//   if(!cartId){
-//     const response= await fetch('/api/carts',{
-//       method:'post'
-//     })
-//     const body= await response.json()
-//     localStorage.setItem('cartId', body.payload)
-//     // console.log(body.payload)
-//     cartId=body.payload
-//   }
-//   console.log(id)
-//   console.log(cartId)
-//   const response = await fetch(`/api/carts/${cartId}/products/${id}`,{
-//     method: 'post'
-//   });
-//   if(response.ok){
-//     alert('Producto agregado')
-//   }else{
-//     alert((await response.json()).error)
-//   }
-// }
 const cartInfoElement = document.getElementsByClassName('cartInfo')[0];
 
   function addCart(id){
@@ -70,9 +46,10 @@ formProducts.onsubmit = (e) => {
 };
 
 
-socket.on("products", list=>{
+socket.on("products", (list)=>{
   const productList = document.querySelector(".productList");
-  console.log(list);
+  
+
 
   productList.innerHTML = `${list.map((product) => `
       <div class="card mb-3" style="max-width: 540px;">

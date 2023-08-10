@@ -1,10 +1,24 @@
 const { ProductsModel } = require('../models/products.model.js');
 const {paginate} = require('mongoose-paginate-v2')
+const CustomError =require('../../../errors/custom-error.js');
+const { generateProductErrorInfo } =require('../../../errors/info.js');
+const {EError}= require('../../../errors/enums.js');
+// const customError= new CustomError;
+
+
 class ProductService {
-  validateProduct(title, description, price, thumbnail, code, stock, category, status) {
+  validateProduct(title, description, price, thumbnail, code, stock, category, status=true) {
     if (!title || !description || !price || !thumbnail || !code || !stock || !category || !status) {
-      console.log('Validation error: please complete all fields');
-      throw new Error('Validation error: please complete all fields');
+      // console.log('Validation error: please complete all fields');
+      // throw new Error('Validation error: please complete all fields');
+
+      console.log("fallo producto")
+      CustomError.createError({
+        name: 'Product creation error',
+        cause: generateProductErrorInfo(title, description, price, thumbnail, code, stock, category, status = true),
+        message: 'Error trying to create product',
+        code: EError.INCOMPLETE_FIELD_ERROR,
+      });
     }
   }
 

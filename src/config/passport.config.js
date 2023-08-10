@@ -14,13 +14,13 @@ const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 
 function iniPassport() {
-console.log("arranca passsport")
+
 //LOCAL
   passport.use(
     'login',
     new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
       try {
-        console.log("logueando")
+        
         const user = await UserModel.findOne({ email: username });
         if (!user) {
           console.log('User Not Found with username (email) ' + username);
