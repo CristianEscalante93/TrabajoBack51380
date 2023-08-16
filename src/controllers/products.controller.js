@@ -38,6 +38,10 @@ class ProductsController {
       return res.render( "home", {products:prod, pagination: rest,links,firstName,userSessionisAdmin,cartId} );
     } catch (error) {
       res.status(500).json({ msg: "Error"});
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
     } 
   }
   async getDetail(req,res){
@@ -58,7 +62,10 @@ class ProductsController {
       };
       return res.status(200).render('productDetail', { product:product });
     } catch (error) {
-      console.log(error);
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
     }
   }
 
@@ -82,6 +89,10 @@ class ProductsController {
       //}
       } catch (error) {
         res.status(500).json({message:"Error"});
+        req.logger.error({
+          message: error.message,
+          stack: JSON.stringify(error.stack, null, 2),
+        });
       }
     }
 
@@ -99,6 +110,10 @@ class ProductsController {
       }
       } catch (error) {
         res.status(500).json({message:"Error"});
+        req.logger.error({
+          message: error.message,
+          stack: JSON.stringify(error.stack, null, 2),
+        });
       }
     }
 
@@ -114,6 +129,10 @@ class ProductsController {
       }); 
       } catch (error) {
         res.status(500).json({message:"Error"});
+        req.logger.error({
+          message: error.message,
+          stack: JSON.stringify(error.stack, null, 2),
+        });
       }
     }
 
@@ -131,6 +150,10 @@ class ProductsController {
       }); 
       } catch (error) {
         res.status(500).json({message:"Error"});
+        req.logger.error({
+          message: error.message,
+          stack: JSON.stringify(error.stack, null, 2),
+        });
       }
     }
 
@@ -146,6 +169,10 @@ class ProductsController {
       }); 
       } catch (error) {
         res.status(500).json({message:"Error"});
+        req.logger.error({
+          message: error.message,
+          stack: JSON.stringify(error.stack, null, 2),
+        });
       }
     }
 
@@ -170,6 +197,10 @@ class ProductsController {
         return res.render( "realTimeProducts", {products:prod,pagination: rest} );
       } catch (error) {
         res.status(500).json({ msg: "Error"});
+        req.logger.error({
+          message: error.message,
+          stack: JSON.stringify(error.stack, null, 2),
+        });
       }
     }
 }

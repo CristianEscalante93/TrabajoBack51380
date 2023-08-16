@@ -23,7 +23,10 @@ class CartsController {
       });
       res.render("cart", { cart: simplifiedCart, cartId });
     } catch (error) {
-      next(error);
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
     }
   }
 
@@ -47,6 +50,10 @@ class CartsController {
     }
     } catch (error) {
       res.status(500).json({message:"Error"});
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
     }
   }
 
@@ -60,9 +67,13 @@ class CartsController {
         success: true,
         payload: JSON.parse(JSON.stringify(addCart._id)),
       }); 
-    
+      req.logger.info("carrito creado");
       } catch (error) {
         res.status(500).json({message:"Error"});
+        req.logger.error({
+          message: error.message,
+          stack: JSON.stringify(error.stack, null, 2),
+        });
       }
   }
 
@@ -85,6 +96,10 @@ class CartsController {
         status: "error",
         payload: err,
       });
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
     }
   }
 
@@ -105,6 +120,10 @@ class CartsController {
         status: "error",
         payload: err.message,
       });
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
     }
   }
 
@@ -124,6 +143,10 @@ class CartsController {
         status: 'error',
         msg: error.message,
       });
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
     }
   }
 
@@ -137,11 +160,15 @@ class CartsController {
         payload: cart,
       });
     } catch (error) {
-      console.error(error);
-      return res.status(400).json({
+      res.status(400).json({
         status: 'error',
         msg: error.message,
       });
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
+      
     }
   }
 
@@ -153,7 +180,10 @@ class CartsController {
   
     res.status(200).json({ status: "success", message: "Cart updated successfully", cart });
   } catch (error) {
-      console.error(error);
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
       res.status(500).json({ status: "error", message: "Internal server error" });
     }
   }
@@ -167,7 +197,10 @@ class CartsController {
         .status(200)
         .json({ status: "success", message: "Product quantity updated", cart });
     } catch (error) {
-      console.error(error);
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
       res.status(500).json({ status: "error", message: "Internal server error" });
     }
   }

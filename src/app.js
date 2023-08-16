@@ -26,6 +26,8 @@ const chatRouter = require("./routes/chats.router.js");
 const authRouter = require("./routes/auth.router.js");
 const sessionsRouter = require("./routes/sessions.router.js");
 const testFaker = require("./routes/testFaker.js");
+const { addLogger } = require("./util/logger.js");
+const testLogger = require("./routes/testLogger.js");
 const productManager = new ProductManager();
 
 
@@ -34,6 +36,7 @@ const MONGO_PASS = process.env.MONGO_PASS;
 
 
 const app= express();
+app.use(addLogger)
 const PORT= process.env.Port;
 
 const httpServer=  app.listen(PORT, ()=>{
@@ -89,6 +92,7 @@ app.use("/carts", cartRouter);
 //PRUEBA
 app.use("/mockingproducts", testFaker)
 app.use(errorHandler);
+app.use("/loggerTest", testLogger)
 
 app.get("*", (req, res) => {
   return res.status(404).json({

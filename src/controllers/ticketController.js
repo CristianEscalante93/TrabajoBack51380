@@ -23,9 +23,12 @@ class TicketsController {
         const code = response.code
         
         return res.render("finishticket",{ ticket, totalCart, purchaser,savedTicket,code});      
-      }catch (err) {
-        console.log(err)
-        res.status(500).json({ Error: `${err}` });
+      }catch (error) {
+        req.logger.error({
+          message: error.message,
+          stack: JSON.stringify(error.stack, null, 2),
+        });
+        res.status(500).json({ Error: `${error}` });
       };
   };
 
@@ -55,8 +58,12 @@ class TicketsController {
       const ticketPreview = await ticketService.stockCartProductsForTicket(userCartId);
       
       return res.render("ticket", { user, products:prod,ticketPreview,userCartId });
-    }catch (err) {
-      res.status(500).json({ err });
+    }catch (error) {
+      res.status(500).json({ error });
+      req.logger.error({
+        message: error.message,
+        stack: JSON.stringify(error.stack, null, 2),
+      });
     };
   };
   
