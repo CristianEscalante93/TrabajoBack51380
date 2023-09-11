@@ -22,6 +22,8 @@ const realTimeProductRouter = require("./routes/real.time.product.router.js");
 
 const ProductManager= require("./DAO/memory/ProductManager.js");
 const {connectMongo, connectSocket} = require("./utils.js");
+const swaggerJSDoc= require("swagger-jsdoc");
+const swaggerUiExpress= require("swagger-ui-express");
 const chatRouter = require("./routes/chats.router.js");
 const authRouter = require("./routes/auth.router.js");
 const sessionsRouter = require("./routes/sessions.router.js");
@@ -38,6 +40,21 @@ const MONGO_PASS = process.env.MONGO_PASS;
 const app= express();
 app.use(addLogger)
 const PORT= process.env.Port;
+
+//SWAGGER
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentacion BackEnd",
+      description: "Proyecto de BackEnd Coderhouse",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 const httpServer=  app.listen(PORT, ()=>{
   console.log(`listening on port: http://localhost:${PORT}`);
