@@ -51,10 +51,11 @@ class UserController{
 
   postLogin(req,res){
     if (!req.user) {
-      return res.json({ error: 'invalid credentials' });
+      return res.status(401).json({ error: 'invalid credentials' });
     }
     req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin , cartID: req.user.cartID};
-    return res.redirect('/products');
+    return res.status(200).send(req.user.email)
+    //return res.redirect('/products');
   }
 
   getFailLogin(req,res){
@@ -68,11 +69,11 @@ class UserController{
 
   postRegister(req,res){
     if (!req.user) {
-      return res.json({ error: 'something went wrong' });
+      return res.status(400).json({ error: 'something went wrong' });
     }
     req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName,age: req.user.age, isAdmin: req.user.isAdmin, cartID: req.user.cartID };
-  
-    return res.redirect('/auth/perfil');
+    return res.status(200).send(req.session.user)
+    //return res.redirect('/auth/perfil');
   }
 
   getFailRegister(req,res){

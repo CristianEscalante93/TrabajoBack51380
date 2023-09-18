@@ -23,7 +23,7 @@ authRouter.get('/faillogin', userController.getFailLogin);
 
 authRouter.get('/register', userController.getRegister);
 
-authRouter.post('/register', passport.authenticate('register', { failureRedirect: '/auth/failregister' }), userController.postRegister);
+authRouter.post('/register', passport.authenticate('register'), userController.postRegister);
 
 authRouter.get('/failregister', userController.getFailRegister);
 

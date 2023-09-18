@@ -5,7 +5,8 @@
   "main": "ProductManager.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon -e yaml,js src/app.js"
+    "dev": "nodemon -e yaml,js src/app.js",
+    "test": "mocha test/testEcommerce.test.js"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,9 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
-    "handlebars": "^4.5.0"
+    "chai": "^4.3.8",
+    "handlebars": "^4.5.0",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }
